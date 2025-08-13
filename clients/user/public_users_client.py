@@ -1,9 +1,11 @@
+from typing import TypedDict
+
 from httpx import Response
 
 from clients.api_client import APIClient
 
 
-class CreateUserDict:
+class CreateUserRequestDict(TypedDict):
     """Описание структуры запроса на аутентификацию."""
     email: str
     password: str
@@ -14,10 +16,11 @@ class CreateUserDict:
 
 class PublicUsersClient(APIClient):
 
-    def create_user_api(self, request: CreateUserDict) -> Response:
+    def create_user_api(self, request: CreateUserRequestDict) -> Response:
         """
         Выполняет POST-запрос к эндпоинту /api/v1/users для создания пользователя
         :return: Объект httpx.Response с данными ответа.
         """
-        url = '/api/v1/users'
-        return self.client.post(url=url, json=request)
+        return self.post('/api/v1/users', json=request)
+
+client = PublicUsersClient()
