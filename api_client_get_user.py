@@ -28,6 +28,6 @@ authentication_user = AuthenticationUserDict(
 private_users_client = get_private_users_client(authentication_user)
 
 # Отправляем GET запрос на получение данных пользователя
-get_user_response = private_users_client.get_user_api(create_user_response_data['users']['id'])
-get_user_response_data = get_user_response.json()
-print('Get users data:', get_user_response_data)
+# get_user_response = private_users_client.get_user_api(create_user_response_data['users']['id'])
+# get_user_response_data = get_user_response.json()
+# print('Get users data:', get_user_response_data)

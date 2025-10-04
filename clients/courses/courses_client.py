@@ -49,7 +49,8 @@ class CoursesClient(APIClient):
         :param query: Словарь с userId.
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.get("/api/v1/courses", params=query)
+        response = self.get("/api/v1/courses", params=query)
+        return response.json()
 
     def get_course_api(self, course_id: str) -> Response:
         """
@@ -58,7 +59,8 @@ class CoursesClient(APIClient):
         :param course_id: Идентификатор курса.
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.get(f"/api/v1/courses/{course_id}")
+        response = self.get(f"/api/v1/courses/{course_id}")
+        return response.json()
 
     def create_course_api(self, request: CreateCourseRequestDict) -> Response:
         """
@@ -68,7 +70,8 @@ class CoursesClient(APIClient):
         previewFileId, createdByUserId.
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.post("/api/v1/courses", json=request)
+        response = self.post("/api/v1/courses", json=request)
+        return response.json()
 
     def update_course_api(self, course_id: str, request: UpdateCourseRequestDict) -> Response:
         """
@@ -78,7 +81,8 @@ class CoursesClient(APIClient):
         :param request: Словарь с title, maxScore, minScore, description, estimatedTime.
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.patch(f"/api/v1/courses/{course_id}", json=request)
+        response =  self.patch(f"/api/v1/courses/{course_id}", json=request)
+        return response.json()
 
     def delete_course_api(self, course_id: str) -> Response:
         """
@@ -87,7 +91,8 @@ class CoursesClient(APIClient):
         :param course_id: Идентификатор курса.
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.delete(f"/api/v1/courses/{course_id}")
+        response = self.delete(f"/api/v1/courses/{course_id}")
+        return response.json()
 
 
 # Добавляем builder для CoursesClient

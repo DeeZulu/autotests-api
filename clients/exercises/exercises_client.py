@@ -1,7 +1,26 @@
-from clients.api_client import APIClient
-from httpx import Response
 from typing import TypedDict
 
+from httpx import Response
+
+from clients.api_client import APIClient
+from clients.private_http_builder import AuthenticationUserDict, get_private_http_client
+
+
+class Exercise(TypedDict):
+    id: str
+    title: str
+    courseId: str
+    maxScore: int
+    minScore: int
+    orderIndex: int
+    description: str
+    estimatedTime: str
+
+class GetExercisesQueryDict(TypedDict):
+    courseId: str
+
+class GetExercisesResponseDict(TypedDict):
+    exercises: list[Exercise]
 
 class CreateExerciseRequestDict(TypedDict):
     title: str
@@ -29,7 +48,8 @@ class ExercisesClient(APIClient):
         :param course_id: ID определённого курса
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.get(f'/api/v1/exercises/{course_id}')
+        response = self.get(f'/api/v1/exercises/{course_id}')
+        return response.json()
 
     def get_exercise_api(self, exercise_id: str) -> Response:
         """
@@ -37,7 +57,8 @@ class ExercisesClient(APIClient):
         :param exercise_id:
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.get(f'/api/v1/exercises/{exercise_id}')
+        response = self.get(f'/api/v1/exercises/{exercise_id}')
+        return response.json()
 
     def create_exercise_api(self, request: CreateExerciseRequestDict) -> Response:
         """
@@ -45,7 +66,8 @@ class ExercisesClient(APIClient):
         :param request: Словарь с title, courseId, maxScore, minScore, orderIndex, description, estimatedTime
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.post(f'/api/v1/exercises', request)
+        response =  self.post(f'/api/v1/exercises', request)
+        return response.json()
 
     def update_exercise_api(self, exercise_id: str, request: UpdateExerciseRequestDict) -> Response:
         """
@@ -54,7 +76,8 @@ class ExercisesClient(APIClient):
         :param request: Словарь с title, courseId, maxScore, minScore, orderIndex, description, estimatedTime
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.patch(f'/api/v1/exercises/{exercise_id}', request)
+        response = self.patch(f'/api/v1/exercises/{exercise_id}', request)
+        return response.json()
 
     def delete_exercise_api(self, exercise_id: str) -> Response:
         """
@@ -62,5 +85,12 @@ class ExercisesClient(APIClient):
         :param exercise_id: ID задания
         :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.delete(f'/api/v1/exercises/{exercise_id}')
+        response = self.delete(f'/api/v1/exercises/{exercise_id}')
+        return response.json()
 
+def get_exercises_client(user: AuthenticationUserDict) -> ExercisesClient:
+    """
+    Функция создаёт экземпляр ExercisesClient с уже настроенным HTTP-клиентом.
+    :return: Готовый к использованию CoursesClient.
+    """
+    return ExercisesClient(client=get_private_http_client(user))
