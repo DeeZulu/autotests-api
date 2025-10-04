@@ -7,6 +7,7 @@ from clients.private_http_builder import AuthenticationUserDict, get_private_htt
 
 
 class Exercise(TypedDict):
+    """Структура объекта задания"""
     id: str
     title: str
     courseId: str
@@ -17,12 +18,15 @@ class Exercise(TypedDict):
     estimatedTime: str
 
 class GetExercisesQueryDict(TypedDict):
+    """Структура запроса получения заданий"""
     courseId: str
 
 class GetExercisesResponseDict(TypedDict):
+    """Структура ответа с заданиями"""
     exercises: list[Exercise]
 
 class CreateExerciseRequestDict(TypedDict):
+    """Структура запроса создания задания"""
     title: str
     courseId: str
     maxScore: int
@@ -32,6 +36,7 @@ class CreateExerciseRequestDict(TypedDict):
     estimatedTime: str
 
 class UpdateExerciseRequestDict(TypedDict):
+    """Структура запроса обновления задания"""
     title: str | None
     courseId: str | None
     maxScore: int | None
@@ -41,6 +46,7 @@ class UpdateExerciseRequestDict(TypedDict):
     estimatedTime: str | None
 
 class ExercisesClient(APIClient):
+    """Клиент для работы с сервисом заданий"""
 
     def get_exercises_api(self, course_id: str) -> Response:
         """
