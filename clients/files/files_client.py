@@ -1,54 +1,60 @@
-from clients.api_client import APIClient
-from httpx import Response
 from typing import TypedDict
 
-class UpdateUserRequestDict(TypedDict):
+from httpx import Response
+
+from clients.api_client import APIClient
+from clients.private_http_builder import AuthenticationUserDict, get_private_http_client
+
+
+class CreateFileRequestDict(TypedDict):
     """
-    Описание структуры запроса на обновление пользователя.
+    Описание структуры запроса на создание файла.
     """
-    email: str | None
-    lastName: str | None
-    firstName: str | None
-    middleName: str | None
+    filename: str
+    directory: str
+    upload_file: str
 
 
-class PrivateUsersClient(APIClient):
+class FilesClient(APIClient):
     """
-    Клиент для работы с /api/v1/users
+    Клиент для работы с /api/v1/files
     """
 
-    def get_user_me_api(self) -> Response:
+    def get_file_api(self, file_id: str) -> Response:
         """
-        Метод получения текущего пользователя.
+        Метод получения файла.
 
-        :return: Ответ от сервера в виде объекта httpx.Response
+        :param file_id: Идентификатор файла.
+        :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.get("/api/v1/users/me")
+        return self.get(f"/api/v1/files/{file_id}")
 
-    def get_user_api(self, user_id: str) -> Response:
+    def create_file_api(self, request: CreateFileRequestDict) -> Response:
         """
-        Метод получения пользователя по идентификатору.
+        Метод создания файла.
 
-        :param user_id: Идентификатор пользователя.
-        :return: Ответ от сервера в виде объекта httpx.Response
+        :param request: Словарь с filename, directory, upload_file.
+        :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.get(f"/api/v1/users/{user_id}")
+        return self.post(
+            "/api/v1/files",
+            data=request,
+            files={"upload_file": open(request['upload_file'], 'rb')}
+        )
 
-    def update_user_api(self, user_id: str, request: UpdateUserRequestDict) -> Response:
+    def delete_file_api(self, file_id: str) -> Response:
         """
-        Метод обновления пользователя по идентификатору.
+        Метод удаления файла.
 
-        :param user_id: Идентификатор пользователя.
-        :param request: Словарь с email, lastName, firstName, middleName.
-        :return: Ответ от сервера в виде объекта httpx.Response
+        :param file_id: Идентификатор файла.
+        :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
-        return self.patch(f"/api/v1/users/{user_id}", json=request)
+        return self.delete(f"/api/v1/files/{file_id}")
 
-    def delete_user_api(self, user_id: str) -> Response:
-        """
-        Метод удаления пользователя по идентификатору.
+def get_files_client(user: AuthenticationUserDict) -> FilesClient:
+    """
+    Функция создаёт экземпляр FilesClient с уже настроенным HTTP-клиентом.
 
-        :param user_id: Идентификатор пользователя.
-        :return: Ответ от сервера в виде объекта httpx.Response
-        """
-        return self.delete(f"/api/v1/users/{user_id}")
+    :return: Готовый к использованию FilesClient.
+    """
+    return FilesClient(client=get_private_http_client(user))

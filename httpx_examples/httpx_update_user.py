@@ -12,7 +12,7 @@ create_user_payload = {
 }
 create_user_response = httpx.post("http://localhost:8000/api/v1/users", json=create_user_payload)
 create_user_response_data = create_user_response.json()
-print('Create user data:', create_user_response_data)
+print('Create users data:', create_user_response_data)
 
 # Проходим аутентификацию
 login_payload = {
@@ -33,8 +33,8 @@ patch_payload = {
   "firstName": "string",
   "middleName": "string"
 }
-patch_response = httpx.patch(f"http://localhost:8000/api/v1/users/{create_user_response_data['user']['id']}",
-                             json=patch_payload, headers=update_user_headers)
+patch_response = httpx.patch(f"http://localhost:8000/api/v1/users/{create_user_response_data['users']['id']}",
+                                      json=patch_payload, headers=update_user_headers)
 patch_response_data = patch_response.json()
 print('Patch data:', patch_response_data)
 

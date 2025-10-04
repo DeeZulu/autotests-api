@@ -12,7 +12,7 @@ create_user_payload = {
 }
 create_user_response = httpx.post("http://localhost:8000/api/v1/users", json=create_user_payload)
 create_user_response_data = create_user_response.json()
-print('Create user data:', create_user_response_data)
+print('Create users data:', create_user_response_data)
 
 # Проходим аутентификацию
 login_payload = {
@@ -23,13 +23,13 @@ login_response = httpx.post("http://localhost:8000/api/v1/authentication/login",
 login_response_data = login_response.json()
 print('Login data:', login_response_data)
 
-# Удаляем ранее созданного пользователя
-delete_user_headers = {
+# Получаем данные пользователя
+get_user_headers = {
     "Authorization": f"Bearer {login_response_data['token']['accessToken']}"
 }
-delete_user_response = httpx.delete(
-    f"http://localhost:8000/api/v1/users/{create_user_response_data['user']['id']}",
-    headers=delete_user_headers
+get_user_response = httpx.get(
+    f"http://localhost:8000/api/v1/users/{create_user_response_data['users']['id']}",
+    headers=get_user_headers
 )
-delete_user_response_data = delete_user_response.json()
-print('Delete user data:', delete_user_response_data)
+get_user_response_data = get_user_response.json()
+print('Get users data:', get_user_response_data)

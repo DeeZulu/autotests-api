@@ -2,7 +2,7 @@ import httpx
 
 # Проходим аутентификацию
 login_payload = {
-    "email": "user@example.com",
+    "email": "users@example.com",
     "password": "string"
 }
 login_response = httpx.post("http://localhost:8000/api/v1/authentication/login", json=login_payload)
@@ -19,4 +19,4 @@ client = httpx.Client(
 # Выполняем запрос с авторизацией
 get_user_me_response = client.get("/api/v1/users/me")
 get_user_me_response_data = get_user_me_response.json()
-print('Get user me data:', get_user_me_response_data)
+print('Get users me data:', get_user_me_response_data)

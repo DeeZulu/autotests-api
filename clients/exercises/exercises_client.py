@@ -27,7 +27,7 @@ class ExercisesClient(APIClient):
         """
         Получение списка заданий для определенного курса.
         :param course_id: ID определённого курса
-        :return: Ответ от сервера в виде объекта httpx.Response
+        :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
         return self.get(f'/api/v1/exercises/{course_id}')
 
@@ -35,7 +35,7 @@ class ExercisesClient(APIClient):
         """
         Получение информации о задании по exercise_id
         :param exercise_id:
-        :return: Ответ от сервера в виде объекта httpx.Response
+        :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
         return self.get(f'/api/v1/exercises/{exercise_id}')
 
@@ -43,7 +43,7 @@ class ExercisesClient(APIClient):
         """
         Создание задания.
         :param request: Словарь с title, courseId, maxScore, minScore, orderIndex, description, estimatedTime
-        :return: Ответ от сервера в виде объекта httpx.Response
+        :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
         return self.post(f'/api/v1/exercises', request)
 
@@ -52,7 +52,7 @@ class ExercisesClient(APIClient):
         Обновления данных задания.
         :param exercise_id: ID задания
         :param request: Словарь с title, courseId, maxScore, minScore, orderIndex, description, estimatedTime
-        :return: Ответ от сервера в виде объекта httpx.Response
+        :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
         return self.patch(f'/api/v1/exercises/{exercise_id}', request)
 
@@ -60,7 +60,7 @@ class ExercisesClient(APIClient):
         """
         Удаление задания.
         :param exercise_id: ID задания
-        :return: Ответ от сервера в виде объекта httpx.Response
+        :return: Ответ от сервера в виде объекта httpx_examples.Response
         """
         return self.delete(f'/api/v1/exercises/{exercise_id}')
 

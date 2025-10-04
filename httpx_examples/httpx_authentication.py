@@ -19,7 +19,7 @@ refresh_payload = {
 }
 
 # Выполняем запрос на обновление токена
-refresh_response = httpx.post("http://localhost:8000/api/v1/authentication/refresh", json=refresh_payload)
+refresh_response = httpx_examples.post("http://localhost:8000/api/v1/authentication/refresh", json=refresh_payload)
 refresh_response_data = refresh_response.json()
 
 # Выводим обновленные токены
