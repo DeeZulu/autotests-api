@@ -2,55 +2,56 @@ from clients.courses.courses_client import get_courses_client, CreateCourseReque
 from clients.exercises.exercises_client import get_exercises_client, CreateExerciseRequestDict
 from clients.files.files_client import get_files_client, CreateFileRequestDict
 from clients.private_http_builder import AuthenticationUserDict
-from clients.users.public_users_client import CreateUserRequestDict, get_public_users_client
-
+from clients.users.public_users_client import get_public_users_client, CreateUserRequestDict
 from tools.fakers import get_random_email
 
-create_new_user_req = CreateUserRequestDict(
+public_users_client = get_public_users_client()
+
+create_user_request = CreateUserRequestDict(
     email=get_random_email(),
-    password="1234",
-    lastName="LName",
-    firstName="FName",
-    middleName="No"
+    password="string",
+    lastName="string",
+    firstName="string",
+    middleName="string"
 )
+create_user_response = public_users_client.create_user(create_user_request)
 
-new_user = get_public_users_client().create_user_api(request=create_new_user_req).json()
-auth_data = AuthenticationUserDict(email=create_new_user_req["email"], password=create_new_user_req["password"])
+authentication_user = AuthenticationUserDict(
+    email=create_user_request['email'],
+    password=create_user_request['password']
+)
+files_client = get_files_client(authentication_user)
+courses_client = get_courses_client(authentication_user)
+exercises_client = get_exercises_client(authentication_user)
 
-files_client = get_files_client(user=auth_data)
-exercises_client = get_exercises_client(user=auth_data)
-courses_client = get_courses_client(user=auth_data)
-
-new_file = CreateFileRequestDict(
+create_file_request = CreateFileRequestDict(
     filename="image.png",
     directory="courses",
-    upload_file="./test_data/image.png"
+    upload_file="./testdata/files/image.png"
 )
+create_file_response = files_client.create_file(create_file_request)
+print('Create file data:', create_file_response)
 
-files_result = files_client.create_file(request=new_file)
-print(f"Create file data: {files_result}")
-
-new_course = CreateCourseRequestDict(
-    title="Test",
-    maxScore=99,
+create_course_request = CreateCourseRequestDict(
+    title="Python",
+    maxScore=100,
     minScore=10,
-    description="TestTest",
-    estimatedTime="one week",
-    previewFileId=files_result["file"]["id"],
-    createdByUserId=new_user["user"]["id"]
+    description="Python API course",
+    estimatedTime="2 weeks",
+    previewFileId=create_file_response['file']['id'],
+    createdByUserId=create_user_response['user']['id']
 )
+create_course_response = courses_client.create_course(create_course_request)
+print('Create course data:', create_course_response)
 
-course_result = courses_client.create_course_api(request=new_course)
-print(f"Create course data: {course_result}")
-
-new_exercise = CreateExerciseRequestDict(
-    title= "Test",
-    courseId= course_result["course"]["id"],
-    maxScore= 15,
-    minScore= 0,
-    orderIndex= 1,
-    description= "Test Exercise",
-    estimatedTime= "30"
+create_exercise_request = CreateExerciseRequestDict(
+    title="Exercise 1",
+    courseId=create_course_response['course']['id'],
+    maxScore=5,
+    minScore=1,
+    orderIndex=0,
+    description="Exercise 1",
+    estimatedTime="5 minutes"
 )
-exercise_result = exercises_client.create_exercise_api(request=new_exercise)
-print(f"Create exercise data: {exercise_result}")
+create_exercise_response = exercises_client.create_exercise(create_exercise_request)
+print('Create exercise data:', create_exercise_response)

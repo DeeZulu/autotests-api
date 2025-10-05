@@ -22,8 +22,11 @@ class PublicUsersClient(APIClient):
         Выполняет POST-запрос к эндпоинту /api/v1/users для создания пользователя
         :return: Объект httpx_examples.Response с данными ответа.
         """
-        response = self.post('/api/v1/users', json=request)
-        return response
+        return self.post('/api/v1/users', json=request)
+
+    def create_user(self, request: CreateUserRequestDict):
+        response = self.create_user_api(request)
+        return response.json()
 
 def get_public_users_client() -> PublicUsersClient:
     """
