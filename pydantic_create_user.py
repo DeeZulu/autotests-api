@@ -15,7 +15,7 @@ class UserSchema(BaseModel):
 
 class CreateUserRequestSchema(BaseModel):
     """Pydantic модель запроса на создание пользователя"""
-    email: str = EmailStr
+    email: EmailStr
     password: str
     last_name: str = Field(alias="lastName")
     first_name: str = Field(alias="firstName")
