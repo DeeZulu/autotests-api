@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 from httpx import Client
 
@@ -7,7 +7,7 @@ from clients.authentication.authentication_schema import LoginRequestSchema
 
 
 class AuthenticationUserSchema(BaseModel):  # Структура данных пользователя для авторизации
-    email: str
+    email: EmailStr
     password: str
 
 
